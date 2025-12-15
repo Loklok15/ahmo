@@ -6,7 +6,7 @@ import re
 BOT_TOKEN = "8514660472:AAEMoK8OPCin12-uTDIabe2bdx8uHmk0trw"
 CHAT_ID  = "6968718713"
 
-def telegram_gonder(metin):
+def telegram_gonder
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     requests.post(url, data={
         "chat_id": CHAT_ID,
@@ -240,6 +240,7 @@ while True:
         ilk_calisti = False
 
     time.sleep(20)
+
 
 
 
