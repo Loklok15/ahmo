@@ -17,10 +17,57 @@ API = "https://api.mail.tm"
 PASSWORD = "Aa123123"
 
 MAILLER = [
-    "plasticframe19@comfythings.com",
+   "plasticframe19@comfythings.com",
     "redmugx55@comfythings.com",
     "quietfan203@comfythings.com",
     "darkmirror15@comfythings.com",
+    "tinybox404@comfythings.com",
+    "goldenspoon68@comfythings.com",
+    "heavybag77@comfythings.com",
+    "medi16@comfythings.com",
+    "ahmo12@comfythings.com",
+    "bluechairx7@comfythings.com",
+    "texsas@comfythings.com",
+    "wina@comfythings.com",
+    "rayban34@comfythings.com",
+    "cilginco@comfythings.com",
+    "retry34@comfythings.com",
+    "fero16@comfythings.com",
+    "wonderman@comfythings.com",
+    "rezlesne500@comfythings.com",
+    "drakula16@comfythings.com",
+    "fullforce@comfythings.com",
+    "jackpot94@comfythings.com",
+    "wildwin16@comfythings.com",
+    "carrick1@comfythings.com",
+    "cimkeri16@comfythings.com",
+    "sfenks16@comfythings.com",
+    "maskof43@comfythings.com",
+    "ahmet444@comfythings.com",
+    "scanner15@comfythings.com",
+    "wildwild16@comfythings.com",
+    "umtbyrm16@comfythings.com",
+    "save34@comfythings.com",
+    "brsdn1616@comfythings.com",
+    "silverlamp34@comfythings.com",
+    "cozytable91@comfythings.com",
+    "kuzukurt@comfythings.com",
+    "ahmo581@comfythings.com",
+    "ahmo585521@comfythings.com",
+    "ahmo58552@comfythings.com",
+    "ahmo5855@comfythings.com",
+    "ahmo10771@comfythings.com",
+    "ahmo10772@comfythings.com",
+    "ahmo10773@comfythings.com",
+    "ahmo10774@comfythings.com",
+    "ahmo10775@comfythings.com",
+    "ahmo10776@comfythings.com",
+    "ahmo10777@comfythings.com",
+    "cottonpillowx4@comfythings.com",
+    "previous1294@comfythings.com",
+    "softblanket07@comfythings.com",
+    "woodencup72@comfythings.com",
+    "youwin@comfythings.com"
 ]
 
 oturumlar = {}
@@ -92,3 +139,4 @@ while True:
         ilk_calisti = False
 
     time.sleep(20)
+
