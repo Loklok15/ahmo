@@ -142,3 +142,4 @@ while True:
         ilk_calisti = False
 
     time.sleep(20)
+
