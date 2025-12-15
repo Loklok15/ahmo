@@ -3,21 +3,23 @@ import time
 import re
 
 # ================== TELEGRAM ==================
-BOT_TOKEN = "8514660472:AAH0LriIcVF7CxOLfcXIfBtO0SjK4BmvAYI"
-CHAT_ID = "6968718713"
-def telegram_gonder(metin):
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    requests.post(url, data={
-        "chat_id": CHAT_ID,
-        "text": metin
-    })
+TELEGRAM_TOKEN = "8514660472:AAH0LriIcVF7CxOLfcXIfBtO0SjK4BmvAYI"
+TELEGRAM_CHAT_ID = "6968718713"
+
+TG_URL = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+
+def telegram_gonder(mesaj):
+    requests.post(TG_URL, data={
+        "chat_id": TELEGRAM_CHAT_ID,
+        "text": mesaj
+    }, timeout=5)
 
 # ================== MAIL.TM ==================
 API = "https://api.mail.tm"
 PASSWORD = "Aa123123"
 
 MAILLER = [
-   "plasticframe19@comfythings.com",
+    "plasticframe19@comfythings.com",
     "redmugx55@comfythings.com",
     "quietfan203@comfythings.com",
     "darkmirror15@comfythings.com",
@@ -70,73 +72,77 @@ MAILLER = [
     "youwin@comfythings.com"
 ]
 
+# ================== SESSION ==================
+session = requests.Session()
 oturumlar = {}
 okunan = {}
 
 def token_al(mail):
-    r = requests.post(f"{API}/token", json={
+    r = session.post(f"{API}/token", json={
         "address": mail,
         "password": PASSWORD
-    })
+    }, timeout=5)
+
     if r.status_code != 200:
         return None
+
     return r.json()["token"]
 
-# ================== OTURUM AÇ ==================
+# ================== BAŞLAT ==================
 for mail in MAILLER:
     token = token_al(mail)
-    if token:
-        oturumlar[mail] = {
-            "Authorization": f"Bearer {token}"
-        }
-        okunan[mail] = set()
+    if not token:
+        continue
 
-print(f"🚀 {len(oturumlar)} mail aktif izleniyor")
+    oturumlar[mail] = {
+        "Authorization": f"Bearer {token}"
+    }
+    okunan[mail] = None  # sadece son mail ID tutulur
 
-# ================== ANA DÖNGÜ ==================
-ilk_calisti = True
+print(f"🚀 {len(oturumlar)} mail ultra optimize izleniyor")
 
+# ================== LOOP ==================
 while True:
     for mail, headers in oturumlar.items():
         try:
-            r = requests.get(f"{API}/messages", headers=headers, timeout=10)
-            r.raise_for_status()
+            r = session.get(f"{API}/messages", headers=headers, timeout=5)
+            mesajlar = r.json().get("hydra:member", [])
+            if not mesajlar:
+                continue
 
-            for m in r.json().get("hydra:member", []):
-                if m["id"] in okunan[mail]:
-                    continue
+            son = mesajlar[0]
+            mid = son["id"]
 
-                okunan[mail].add(m["id"])
+            if okunan[mail] == mid:
+                continue
 
-                # ilk çalışmada sadece işaretle
-                if ilk_calisti:
-                    continue
+            okunan[mail] = mid
 
-                d = requests.get(
-                    f"{API}/messages/{m['id']}",
-                    headers=headers,
-                    timeout=10
-                ).json()
+            d = session.get(
+                f"{API}/messages/{mid}",
+                headers=headers,
+                timeout=5
+            ).json()
 
-                text = ""
-                if d.get("text"):
-                    text += d["text"]
-                if isinstance(d.get("html"), list):
-                    text += " ".join(d["html"])
+            text = ""
+            if isinstance(d.get("text"), str):
+                text += d["text"]
+            if isinstance(d.get("html"), list):
+                text += " ".join(d["html"])
 
-                kodlar = set(re.findall(r"\b\d{6}\b", text))
-                kodlar.discard("000000")
+            kodlar = [k for k in re.findall(r"\b\d{6}\b", text) if k != "000000"]
+            if not kodlar:
+                continue
 
-                for kod in kodlar:
-                    telegram_gonder(f"🔐 KOD: {kod}\n📧 {mail}")
-                    print(f"📩 Telegram gönderildi: {kod} ({mail})", flush=True)
+            kod = kodlar[-1]
+
+            telegram_gonder(
+                f"🔐 DOĞRULAMA KODU\n\n{kod}\n\n📧 {mail}"
+            )
+
+            print(f"📩 Telegram → {kod} ({mail})")
 
         except Exception as e:
-            print(f"❌ hata: {mail} → {e}", flush=True)
+            print("❌", mail, e)
 
-    if ilk_calisti:
-        print("🧊 İlk tarama bitti, artık sadece YENİ mailler gönderilecek", flush=True)
-        ilk_calisti = False
-
-    time.sleep(20)
-
+    time.sleep(3)
