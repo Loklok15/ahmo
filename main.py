@@ -127,9 +127,7 @@ while True:
                     text += " ".join(d["html"])
 
                 # 🔥 TEKILLEŞTİR
-                kodlar = set(re.findall(r"\b\d{6}\b", text))
-
-                for kod in kodlar:
+              for kod in kodlar:
                     if kod != "000000":
                         telegram_gonder(kod, mail)
                         print(f"📩 Telegram gönderildi: {kod} ({mail})", flush=True)
@@ -142,4 +140,5 @@ while True:
         ilk_calisti = False
 
     time.sleep(20)
+
 
